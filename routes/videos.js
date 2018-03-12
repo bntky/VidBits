@@ -6,6 +6,10 @@ router.get('/', async (req, res, next) => {
   res.render('index');
 });
 
+router.get('/videos/create.html', async (req, res, next) => {
+  res.status(200).render('create');
+});
+
 router.post('/videos', async (req, res, next) => {
   const {title, description} = req.body;
   const video = new Video({title, description});
