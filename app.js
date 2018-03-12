@@ -16,10 +16,12 @@ app.set('view engine', 'handlebars');
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger('dev'));
 }
+
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', videosRoute);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
