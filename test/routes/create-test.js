@@ -2,29 +2,13 @@ const {assert} = require('chai');
 const request = require('supertest');
 const {jsdom} = require('jsdom');
 
-require('../test-utils');
+const {parseAttributeFromHTML} = require('../test-utils');
 
 const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
 const app = require('../../app');
-
-const parseAttributeFromHTML = (htmlAsString, selector, attribute) => {
-  const selectedElement = jsdom(htmlAsString).querySelector(selector);
-
-  if (selectedElement === null) {
-    throw new Error(`No element with selector ${selector} found in HTML string`);
-  }
-
-  const attrValue = selectedElement.getAttribute(attribute);
-
-  if (attrValue === null) {
-    throw new Error(`No attribute ${attribute} on element ${selector} in HTML string`);
-  }
-
-  return attrValue;
-};
 
 describe('Server path: /videos', () => {
   beforeEach(connectDatabase);
@@ -85,7 +69,8 @@ describe('Server path: /videos', () => {
       const createdVideo = await Video.findOne({});
 
       assert.isNull(createdVideo);
-      assert.include(response.text, 'Title is missing');
+      assert.include(parseAttributeFromHTML(response.text, '#title-input', 'value'),
+                     'Title is missing');
     });
 
     it('responds with 400 if the title is missing', async () => {
