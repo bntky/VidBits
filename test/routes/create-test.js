@@ -40,5 +40,20 @@ describe('Server path: /videos', () => {
 
       assert.ok(createdVideo, 'Video was not added to the database');
     });
+
+    it('creates a new video in the database that has a title and description', async () => {
+      const title = 'A new train video';
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {title, description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+      const createdVideo = await Video.findOne({});
+
+      assert.equal(createdVideo.title, title);
+      assert.equal(createdVideo.description, description);
+    });
   });
 });
