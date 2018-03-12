@@ -99,5 +99,19 @@ describe('Server path: /videos', () => {
       assert.equal(parseAttributeFromHTML(response.text, 'form', 'action'),
                    '/videos');
     });
+
+    it('renders a validation error message when title is missing', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+
+      const expectedError = jsdom(response.text).querySelector('span').textContent;
+      
+      assert.include(expectedError, 'title is required');
+    });
   });
 });
