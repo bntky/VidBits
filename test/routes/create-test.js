@@ -4,13 +4,16 @@ const {jsdom} = require('jsdom');
 
 require('../test-utils');
 
-const {mongoose, databaseUrl, options} = require('../../database'); 
+const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
 const app = require('../../app');
 
 describe('Server path: /videos', () => {
+  beforeEach(connectDatabase);
+  afterEach(disconnectDatabase);
+    
   describe('POST', () => {
     it('returns 201 when posting video', async () => {
       const video = {};
@@ -23,15 +26,6 @@ describe('Server path: /videos', () => {
       assert.equal(response.status, 201);
     });
 
-    beforeEach(async () => {
-      await mongoose.connect(databaseUrl, options);
-      await mongoose.connection.db.dropDatabase();
-    });
-
-    afterEach(async () => {
-      await mongoose.disconnect();
-    });
-    
     it('creates a new video and adds it to the database', async () => {
       const video = {
         title: 'A new train video',
