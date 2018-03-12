@@ -23,7 +23,7 @@ router.post('/videos', async (req, res, next) => {
     await video.save();
     res.status(201).render('video', {video});
   } else {
-    res.send('Title is missing');
+    res.status(400).send('Title is missing');
   }
 
 });

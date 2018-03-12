@@ -71,5 +71,18 @@ describe('Server path: /videos', () => {
       assert.isNull(createdVideo);
       assert.include(response.text, 'Title is missing');
     });
+
+    it('responds with 400 if the title is missing', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+      const createdVideo = await Video.findOne({});
+
+      assert.equal(response.status, 400);
+    });
   });
 });
