@@ -18,4 +18,19 @@ describe('User visits root', () => {
       assert.include(browser.getText('body'), 'Save a video');
     });
   });
+  describe('creates a new video', () => {
+    it('and sees video on the root page', () => {
+      const title = "My first title";
+      const description = "A long description of some interesting train video";
+      browser.url('/videos/create.html');
+
+      browser.setValue('#title-input', title);
+      browser.setValue('#description-input', description);
+      browser.click('#submit-button');
+      browser.url('/');
+
+      assert.include(browser.getText('body'), title);
+      assert.include(browser.getText('body'), description);
+    });
+  });
 });
