@@ -10,6 +10,22 @@ const Video = require('../../models/video');
 
 const app = require('../../app');
 
+const parseAttributeFromHTML = (htmlAsString, selector, attribute) => {
+  const selectedElement = jsdom(htmlAsString).querySelector(selector);
+
+  if (selectedElement === null) {
+    throw new Error(`No element with selector ${selector} found in HTML string`);
+  }
+
+  const attrValue = selectedElement.getAttribute(attribute);
+
+  if (attrValue === null) {
+    throw new Error(`No attribute ${attribute} on element ${selector} in HTML string`);
+  }
+
+  return attrValue;
+};
+
 describe('Server path: /videos', () => {
   beforeEach(connectDatabase);
   afterEach(disconnectDatabase);
@@ -83,6 +99,20 @@ describe('Server path: /videos', () => {
       const createdVideo = await Video.findOne({});
 
       assert.equal(response.status, 400);
+    });
+
+    it('renders the create video form when title is missing', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+      const createdVideo = await Video.findOne({});
+
+      assert.equal(parseAttributeFromHTML(response.text, 'form', 'action'),
+                   '/videos');
     });
   });
 });

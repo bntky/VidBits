@@ -1,10 +1,10 @@
     <div class="contents-container">
       <form class="input-form" action="/videos" method="post" >
         <label class="form-label" for="title">Title</label>
-        <input id="title-input" name="title" type="text" value="">
+        <input id="title-input" name="title" type="text" value="{{title}}">
 
         <label class="form-label" for="description">Description</label>
-        <textarea id="description-input" name="description"></textarea>
+        <textarea id="description-input" name="description">{{description}}</textarea>
 
         <button id="submit-button" type="submit">
           <p>Save a video</p>
