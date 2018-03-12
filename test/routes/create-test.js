@@ -2,7 +2,11 @@ const {assert} = require('chai');
 const request = require('supertest');
 const {jsdom} = require('jsdom');
 
+require('../test-utils');
+
 const {mongoose, databaseUrl, options} = require('../../database'); 
+
+const Video = require('../../models/video');
 
 const app = require('../../app');
 
