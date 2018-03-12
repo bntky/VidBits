@@ -28,6 +28,16 @@ describe('Model: Video', () => {
       assert.strictEqual(video.title, title.toString());
     });
   });
+
+  describe('description field', () => {
+    it('is a string', async () => {
+      const description = 314159;
+
+      const video = new Video({ description });
+
+      assert.strictEqual(video.description, description.toString());
+    });
+  });
 });
 
 module.exports = {
