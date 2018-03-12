@@ -17,6 +17,12 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const router = require('express').Router();
+app.use('/', router);
+router.post('/videos', async (req, res, next) => {
+  res.status(201).send('Created');
+});
+
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
