@@ -21,7 +21,7 @@ describe('Server path: /', () => {
             'Watch as another train thrills you by driving down a train track';
       const video = await Video.create({title, description});
       
-      const response = await request(app).get('/');
+      const response = await request(app).get('/').redirects();
 
       assert.include(response.text, title);
       assert.include(response.text, description);
