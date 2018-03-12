@@ -81,7 +81,6 @@ describe('Server path: /videos', () => {
             post('/videos').
             type('form').
             send(video);
-      const createdVideo = await Video.findOne({});
 
       assert.equal(response.status, 400);
     });
@@ -94,7 +93,6 @@ describe('Server path: /videos', () => {
             post('/videos').
             type('form').
             send(video);
-      const createdVideo = await Video.findOne({});
 
       assert.equal(parseAttributeFromHTML(response.text, 'form', 'action'),
                    '/videos');

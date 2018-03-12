@@ -2,7 +2,9 @@
       <form class="input-form" action="/videos" method="post" >
         <label class="form-label" for="title">Title</label>
         <input id="title-input" name="title" type="text" value="{{title}}">
-        <span>{{error}}</span>
+        {{#if error}}
+          <span>{{error}}</span>
+        {{/if}}
 
         <label class="form-label" for="description">Description</label>
         <textarea id="description-input" name="description">{{description}}</textarea>
