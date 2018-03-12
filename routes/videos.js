@@ -19,8 +19,13 @@ router.post('/videos', async (req, res, next) => {
   const {title, description} = req.body;
   const video = new Video({title, description});
 
-  await video.save();
-  res.status(201).render('video', {video});
+  if( title ) {
+    await video.save();
+    res.status(201).render('video', {video});
+  } else {
+    res.send('Title is missing');
+  }
+
 });
 
 module.exports = router;

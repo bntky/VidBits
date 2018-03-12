@@ -16,7 +16,9 @@ describe('Server path: /videos', () => {
     
   describe('POST', () => {
     it('returns 201 when posting video', async () => {
-      const video = {};
+      const video = {
+        title: 'This needs a title'
+      };
 
       const response = await request(app).
             post('/videos').
@@ -54,6 +56,20 @@ describe('Server path: /videos', () => {
 
       assert.equal(createdVideo.title, title);
       assert.equal(createdVideo.description, description);
+    });
+
+    it('displays an error when video title is missing', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+      const createdVideo = await Video.findOne({});
+
+      assert.isNull(createdVideo);
+      assert.include(response.text, 'Title is missing');
     });
   });
 });
