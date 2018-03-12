@@ -3,7 +3,8 @@ const router = require('express').Router();
 const Video = require('../models/video');
 
 router.get('/', async (req, res, next) => {
-  res.render('index');
+  const videos = await Video.find({});
+  res.render('index', {videos});
 });
 
 router.get('/videos/create.html', async (req, res, next) => {
