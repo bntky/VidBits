@@ -23,7 +23,8 @@ describe('Server path: /videos', () => {
       const response = await request(app).
             post('/videos').
             type('form').
-            send(video);
+            send(video).
+            redirects();
 
       assert.equal(response.status, 201);
     });
@@ -131,6 +132,22 @@ describe('Server path: /videos', () => {
         response.text, '#description-input');
       
       assert.include(expectedDescription, description);
+    });
+
+    it('redirects new video to /vidoes/:id', async () => {
+      const video = {
+        title: 'A new train video',
+        description: 'Oooo Cool train!  Lets look at the train now...!'
+      };
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+      const createdVideo = await Video.findOne({});
+
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.location, `/videos/${createdVideo._id}`);
     });
   });
 });

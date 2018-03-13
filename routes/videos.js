@@ -17,7 +17,7 @@ router.get('/videos/create.html', async (req, res, next) => {
 
 router.get('/videos/:id', async (req, res, next) => {
   const video = await Video.findById(req.params.id);
-  res.render('videos/show', {video});
+  res.status(201).render('videos/show', {video});
 });
 
 router.post('/videos', async (req, res, next) => {
@@ -26,7 +26,7 @@ router.post('/videos', async (req, res, next) => {
 
   if( title ) {
     await video.save();
-    res.status(201).render('video', {video});
+    res.redirect(`/videos/${video._id}`);
   } else {
     res.status(400).render('create', {
       title: '',
