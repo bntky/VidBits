@@ -30,4 +30,14 @@ describe('Model: Video', () => {
       assert.strictEqual(video.description, description.toString());
     });
   });
+
+  describe('url field', () => {
+    it('is a string', async () => {
+      const url = 54321;
+
+      const video = new Video({ url });
+
+      assert.strictEqual(video.url, url.toString());
+    });
+  });
 });
