@@ -24,7 +24,7 @@ router.post('/videos', async (req, res, next) => {
     res.status(201).render('video', {video});
   } else {
     res.status(400).render('create', {
-      title: 'Title is missing',
+      title: '',
       description: video.description,
       error: 'title is required'
     });

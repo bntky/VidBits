@@ -58,7 +58,7 @@ describe('Server path: /videos', () => {
       assert.equal(createdVideo.description, description);
     });
 
-    it('displays an error when video title is missing', async () => {
+    it('no video added to database when title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
       const video = {description};
 
@@ -68,9 +68,11 @@ describe('Server path: /videos', () => {
             send(video);
       const createdVideo = await Video.findOne({});
 
+      const expectedTitle = parseAttributeFromHTML(
+        response.text, '#title-input', 'value');
+      
       assert.isNull(createdVideo);
-      assert.include(parseAttributeFromHTML(response.text, '#title-input', 'value'),
-                     'Title is missing');
+      assert.equal(expectedTitle, '');
     });
 
     it('responds with 400 if the title is missing', async () => {
