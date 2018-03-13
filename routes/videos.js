@@ -15,6 +15,11 @@ router.get('/videos/create.html', async (req, res, next) => {
   res.status(200).render('create');
 });
 
+router.get('/videos/:id', async (req, res, next) => {
+  const video = await Video.findById(req.params.id);
+  res.render('videos/show', {video});
+});
+
 router.post('/videos', async (req, res, next) => {
   const {title, description} = req.body;
   const video = new Video({title, description});
