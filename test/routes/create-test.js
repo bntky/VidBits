@@ -84,7 +84,9 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      assert.equal(response.status, 400);
+      const expectedStatus = response.status;
+      
+      assert.equal(expectedStatus, 400);
     });
 
     it('renders the create video form when title is missing', async () => {
@@ -96,8 +98,10 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      assert.equal(parseAttributeFromHTML(response.text, 'form', 'action'),
-                   '/videos');
+      const expectedFormAction = parseAttributeFromHTML(
+        response.text, 'form', 'action');
+      
+      assert.equal(expectedFormAction, '/videos');
     });
 
     it('renders a validation error message when title is missing', async () => {
