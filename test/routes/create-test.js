@@ -2,7 +2,7 @@ const {assert} = require('chai');
 const request = require('supertest');
 const {jsdom} = require('jsdom');
 
-const {parseAttributeFromHTML} = require('../test-utils');
+const {parseTextFromHTML, parseAttributeFromHTML} = require('../test-utils');
 
 const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
 
@@ -113,7 +113,7 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedError = jsdom(response.text).querySelector('span').textContent;
+      const expectedError = parseTextFromHTML(response.text, 'span');
       
       assert.include(expectedError, 'title is required');
     });
@@ -127,8 +127,8 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedDescription = jsdom(response.text).
-            querySelector('#description-input').textContent;
+      const expectedDescription = parseTextFromHTML(
+        response.text, '#description-input');
       
       assert.include(expectedDescription, description);
     });
