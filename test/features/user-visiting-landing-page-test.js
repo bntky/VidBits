@@ -2,6 +2,10 @@ const {assert} = require('chai');
 
 require('../test-utils');
 
+const generateRandomUrl = (domain) => {
+  return `http://${domain}/${Math.random()}`;
+};
+
 describe('User visits root', () => {
   describe('without any videos', () => {
     it('starts blank', () => {
@@ -22,7 +26,7 @@ describe('User visits root', () => {
     it('and sees video on the root page', () => {
       const title = "My first title";
       const description = "A long description of some interesting train video";
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const url = generateRandomUrl('www.youtube.com');
       browser.url('/videos/create.html');
 
       browser.setValue('#title-input', title);
