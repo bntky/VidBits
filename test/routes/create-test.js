@@ -111,5 +111,20 @@ describe('Server path: /videos', () => {
       
       assert.include(expectedError, 'title is required');
     });
+
+    it('renders the create video form after error preserving valid data', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+
+      const expectedDescription = jsdom(response.text).
+            querySelector('#description-input').textContent;
+      
+      assert.include(expectedDescription, description);
+    });
   });
 });
