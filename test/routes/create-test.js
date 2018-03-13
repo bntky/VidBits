@@ -56,9 +56,7 @@ describe('Server path: /videos', () => {
             send(video);
       const createdVideo = await Video.findOne({});
 
-      assert.equal(createdVideo.title, title);
-      assert.equal(createdVideo.description, description);
-      assert.equal(createdVideo.url, url);
+      assert.include(createdVideo, video);
     });
 
     it('no video added to database when title is missing', async () => {
