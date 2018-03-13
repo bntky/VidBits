@@ -44,10 +44,11 @@ describe('Server path: /videos', () => {
       assert.ok(createdVideo, 'Video was not added to the database');
     });
 
-    it('creates a new video in the database that has a title and description', async () => {
+    it('saves a Video document', async () => {
       const title = 'A new train video';
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {title, description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {title, description, url};
 
       const response = await request(app).
             post('/videos').
@@ -57,6 +58,7 @@ describe('Server path: /videos', () => {
 
       assert.equal(createdVideo.title, title);
       assert.equal(createdVideo.description, description);
+      assert.equal(createdVideo.url, url);
     });
 
     it('no video added to database when title is missing', async () => {
