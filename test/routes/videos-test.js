@@ -2,7 +2,7 @@ const {assert} = require('chai');
 const request = require('supertest');
 const {jsdom} = require('jsdom');
 
-const {parseTextFromHTML} = require('../test-utils');
+const {parseAttributeFromHTML, parseTextFromHTML} = require('../test-utils');
 
 const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
 
@@ -38,15 +38,19 @@ describe('Server path: /videos/:id', () => {
       const title = 'Yet Another Train';
       const description =
             'Watch as another train thrills you by driving down a train track';
-      const video = await Video.create({title, description});
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = await Video.create({title, description, url});
 
       const response = await request(app).get(`/videos/${video._id}`);
       const expectedTitle = parseTextFromHTML(response.text, '.video-title');
       const expectedDescription = parseTextFromHTML(
         response.text, '.video-description');
+      const expectedUrl = parseAttributeFromHTML(
+        response.text, '.video-player', 'src');
 
       assert.include(expectedTitle, title);
       assert.include(expectedDescription, description);
+      assert.equal(expectedUrl, url);
     });
   });
 });
