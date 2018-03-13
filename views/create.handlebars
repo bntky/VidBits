@@ -1,16 +1,16 @@
     <div class="contents-container">
       <form class="input-form" action="/videos" method="post" >
         <label class="form-label" for="title">Title</label>
-        <input id="title-input" name="title" type="text" value="{{title}}">
-        {{#if error}}
+        <input id="title-input" name="title" type="text" value="{{video.title}}">
+        {{#with video.errors.title as |error|}}
           <span>{{error}}</span>
-        {{/if}}
+        {{/with}}
 
         <label class="form-label" for="description">Description</label>
-        <textarea id="description-input" name="description">{{description}}</textarea>
+        <textarea id="description-input" name="description">{{video.description}}</textarea>
 
         <label class="form-label" for="url">Url</label>
-        <input id="url-input" name="url" type="text" value="{{url}}">
+        <input id="url-input" name="url" type="text" value="{{video.url}}">
 
         <button id="submit-button" type="submit">
           <p>Save a video</p>
