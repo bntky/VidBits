@@ -40,4 +40,22 @@ describe('User visits root', () => {
       assert.include(browser.getAttribute('.video-player', 'src'), url);
     });
   });
+
+  describe('with an existing video', () => {
+    it('can navigate to a video', () => {
+      const video = {
+        title: 'A Train vidoe',
+        description: 'Train drives down train tracks.  Honks horn.',
+        url: generateRandomUrl('www.youtube.com')
+      };
+      browser.url('/videos/create.html');
+      browser.setValue('#title-input', video.title);
+      browser.setValue('#description-input', video.description);
+      browser.setValue('#url-input', video.url);
+      browser.click('#submit-button');
+      browser.url('/');
+
+      assert.equal(browser.getText('.show-video'), video.title);
+    });
+  });
 });
