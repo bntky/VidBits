@@ -58,5 +58,26 @@ describe('Server path: /videos/:id/updates', () => {
 
       assert.equal(response.status, 302);
     });
+
+    it('invalid updates to a video will not change the database', async () => {
+      const title = 'A new train video';
+      const description= 'Oooo Cool train!  Lets look at the train now...!';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = new Video({title, description, url});
+      await video.save();
+      const replaceVideo = {
+        title: undefined,
+        description: description,
+        url: url
+      };
+
+      const response = await request(app).
+            post(`/videos/${video._id}/updates`).
+            type('form').
+            send(replaceVideo);
+      const updatedVideo = await Video.findById(video._id);
+
+      assert.strictEqual(updatedVideo.title, title);
+    });
   });
 });
