@@ -48,7 +48,7 @@ router.post('/videos/:id/updates', async (req, res, next) => {
   video.validateSync();
 
   if( video.errors ) {
-    res.send('Invalid video');
+    res.status(400).send('Invalid video');
   } else {
     await video.save();
     res.redirect(`/videos/${video._id}`);
