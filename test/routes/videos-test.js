@@ -55,3 +55,24 @@ describe('Server path: /videos/:id', () => {
     });
   });
 });
+
+describe('Server path: /videos/:id/edit', () => {
+  beforeEach(connectDatabase);
+  afterEach(disconnectDatabase);
+
+  describe('GET', () => {
+    it('renders a form to edit the video', async () => {
+      const title = 'Yet Another Train';
+      const description =
+            'Watch as another train thrills you by driving down a train track';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = await Video.create({title, description, url});
+      
+      const response = await request(app).
+            get(`/videos/${video._id}/edit`).
+            redirects();
+
+      assert.include(response.text, title);
+    });
+  });
+});
