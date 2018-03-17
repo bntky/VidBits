@@ -74,5 +74,21 @@ describe('Server path: /videos/:id/edit', () => {
 
       assert.include(response.text, title);
     });
+
+    it('posts the edited video to /updates', async () => {
+      const title = 'Yet Another Train';
+      const description =
+            'Watch as another train thrills you by driving down a train track';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = await Video.create({title, description, url});
+      
+      const response = await request(app).
+            get(`/videos/${video._id}/edit`).
+            redirects();
+      const formAction = parseAttributeFromHTML(
+        response.text, 'form', 'action');
+
+      assert.equal(formAction, `/videos/${video._id}/updates`);
+    });
   });
 });
