@@ -18,6 +18,7 @@ describe('Server path: /videos', () => {
     it('returns 201 when posting video', async () => {
       const video = {
         title: 'This needs a title',
+        description: 'Oooo Cool train!  Lets look at the train now...!',
         url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
       };
 
