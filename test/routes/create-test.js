@@ -168,5 +168,20 @@ describe('Server path: /videos', () => {
       
       assert.include(expectedUrl, url);
     });
+
+    it('renders a validation message when URL is missing', async () => {
+      const title = 'A new train video';
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const video = {title, description};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+
+      const expectedError = parseTextFromHTML(response.text, 'span');
+      
+      assert.include(expectedError, 'a URL is required');
+    });
   });
 });

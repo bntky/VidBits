@@ -11,6 +11,9 @@
 
         <label class="form-label" for="url">Url</label>
         <input id="url-input" name="url" type="text" value="{{video.url}}">
+        {{#with video.errors.url as |error|}}
+          <span>{{error}}</span>
+        {{/with}}
 
         <button id="submit-button" type="submit">
           <p>Save a video</p>
