@@ -39,4 +39,14 @@ router.post('/videos', async (req, res, next) => {
 
 });
 
+router.post('/videos/:id/updates', async (req, res, next) => {
+  const {title, description, url} = req.body;
+  let video = await Video.findById(req.params.id);
+  video.title = title;
+  video.description = description;
+  video.url = url;
+  await video.save();
+  res.render('videos/show', {video});
+});
+
 module.exports = router;
