@@ -46,7 +46,7 @@ router.post('/videos/:id/updates', async (req, res, next) => {
   video.description = description;
   video.url = url;
   await video.save();
-  res.render('videos/show', {video});
+  res.redirect(`/videos/${video._id}`);
 });
 
 module.exports = router;

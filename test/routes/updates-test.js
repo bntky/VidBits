@@ -37,5 +37,26 @@ describe('Server path: /videos/:id/updates', () => {
       assert.equal(allVideos.length, 1);
       assert.equal(allVideos[0].title, newTitle);
     });
+
+    it('returns a 302 status after updating a video', async () => {
+      const title = 'A new train video';
+      const description= 'Oooo Cool train!  Lets look at the train now...!';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = new Video({title, description, url});
+      await video.save();
+      const newTitle = 'A newer than new train video';
+      const updatedVideo = {
+        title: newTitle,
+        description: description,
+        url: url
+      };
+
+      const response = await request(app).
+            post(`/videos/${video._id}/updates`).
+            type('form').
+            send(updatedVideo);
+
+      assert.equal(response.status, 302);
+    });
   });
 });
