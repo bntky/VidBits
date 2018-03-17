@@ -8,6 +8,9 @@
 
         <label class="form-label" for="description">Description</label>
         <textarea id="description-input" name="description">{{video.description}}</textarea>
+        {{#with video.errors.description as |error|}}
+          <span>{{error}}</span>
+        {{/with}}
 
         <label class="form-label" for="url">Url</label>
         <input id="url-input" name="url" type="text" value="{{video.url}}">
