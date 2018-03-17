@@ -188,5 +188,21 @@ describe('Server path: /videos', () => {
       
       assert.include(expectedError, 'a URL is required');
     });
+
+    it('renders the title when description is missing', async () => {
+      const title = 'A new train video';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {title, url};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+
+      const expectedTitle = parseAttributeFromHTML(
+        response.text, '#title-input', 'value');
+
+      assert.include(expectedTitle, title);
+    });
   });
 });
