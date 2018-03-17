@@ -17,7 +17,8 @@ describe('Server path: /videos', () => {
   describe('POST', () => {
     it('returns 201 when posting video', async () => {
       const video = {
-        title: 'This needs a title'
+        title: 'This needs a title',
+        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
       };
 
       const response = await request(app).
@@ -32,7 +33,8 @@ describe('Server path: /videos', () => {
     it('creates a new video and adds it to the database', async () => {
       const video = {
         title: 'A new train video',
-        description: 'Oooo Cool train!  Lets look at the train now...!'
+        description: 'Oooo Cool train!  Lets look at the train now...!',
+        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
       };
 
       const response = await request(app).
@@ -137,7 +139,8 @@ describe('Server path: /videos', () => {
     it('redirects new video to /vidoes/:id', async () => {
       const video = {
         title: 'A new train video',
-        description: 'Oooo Cool train!  Lets look at the train now...!'
+        description: 'Oooo Cool train!  Lets look at the train now...!',
+        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
       };
 
       const response = await request(app).
@@ -160,8 +163,8 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedUrl = parseTextFromHTML(
-        response.text, '#url-input');
+      const expectedUrl = parseAttributeFromHTML(
+        response.text, '#url-input', 'value');
       
       assert.include(expectedUrl, url);
     });

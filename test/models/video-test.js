@@ -47,5 +47,13 @@ describe('Model: Video', () => {
 
       assert.strictEqual(video.url, url.toString());
     });
+
+    it('is required', () => {
+      const video = new Video({url: null});
+
+      video.validateSync();
+
+      assert.equal(video.errors.url.message, 'a URL is required');
+    });
   });
 });

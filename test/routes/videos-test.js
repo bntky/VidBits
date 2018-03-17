@@ -19,7 +19,8 @@ describe('Server path: /', () => {
       const title = 'Yet Another Train';
       const description =
             'Watch as another train thrills you by driving down a train track';
-      const video = await Video.create({title, description});
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = await Video.create({title, description, url});
       
       const response = await request(app).get('/').redirects();
 

@@ -13,7 +13,8 @@ const Video = mongoose.model(
     },
 
     url: {
-      type: String
+      type: String,
+      required: 'a URL is required'
     }
   })
 );

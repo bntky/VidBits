@@ -12,10 +12,12 @@ describe('User visits create video page', () => {
     it('and sees title rendered', () => {
       const title = "My first title";
       const description = "A long description of some interesting train video";
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
       browser.url('/videos/create.html');
 
       browser.setValue('#title-input', title);
       browser.setValue('#description-input', description);
+      browser.setValue('#url-input', url);
       browser.click('#submit-button');
 
       assert.include(browser.getText('body'), title);
