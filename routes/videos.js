@@ -41,6 +41,7 @@ router.post('/videos', async (req, res, next) => {
 
 router.post('/videos/:id/updates', async (req, res, next) => {
   const {title, description, url} = req.body;
+  const origVideo = await Video.findById(req.params.id);
   let video = await Video.findById(req.params.id);
   video.title = title;
   video.description = description;
@@ -48,7 +49,10 @@ router.post('/videos/:id/updates', async (req, res, next) => {
   video.validateSync();
 
   if( video.errors ) {
-    res.status(400).send('Invalid video');
+    video.title = origVideo.title;
+    video.description = origVideo.description;
+    video.url = origVideo.url;
+    res.status(400).render('videos/edit', {video});
   } else {
     await video.save();
     res.redirect(`/videos/${video._id}`);
