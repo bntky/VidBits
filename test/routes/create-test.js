@@ -63,7 +63,8 @@ describe('Server path: /videos', () => {
 
     it('no video added to database when title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
 
       const response = await request(app).
             post('/videos').
@@ -80,7 +81,8 @@ describe('Server path: /videos', () => {
 
     it('responds with 400 if the title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
 
       const response = await request(app).
             post('/videos').
@@ -94,7 +96,8 @@ describe('Server path: /videos', () => {
 
     it('renders the create video form when title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
 
       const response = await request(app).
             post('/videos').
@@ -109,7 +112,8 @@ describe('Server path: /videos', () => {
 
     it('renders a validation error message when title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
 
       const response = await request(app).
             post('/videos').
@@ -121,9 +125,10 @@ describe('Server path: /videos', () => {
       assert.include(expectedError, 'title is required');
     });
 
-    it('renders the create video form after error preserving valid data', async () => {
+    it('renders the description value when title is missing', async () => {
       const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {description};
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
 
       const response = await request(app).
             post('/videos').
