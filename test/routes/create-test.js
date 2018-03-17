@@ -149,5 +149,21 @@ describe('Server path: /videos', () => {
       assert.equal(response.status, 302);
       assert.equal(response.headers.location, `/videos/${createdVideo._id}`);
     });
+
+    it('renders URL value when title is missing', async () => {
+      const description = 'Oooo Cool train!  Lets look at the train now...!';
+      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
+      const video = {description, url};
+
+      const response = await request(app).
+            post('/videos').
+            type('form').
+            send(video);
+
+      const expectedUrl = parseTextFromHTML(
+        response.text, '#url-input');
+      
+      assert.include(expectedUrl, url);
+    });
   });
 });
