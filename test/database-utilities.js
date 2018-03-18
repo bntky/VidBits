@@ -10,7 +10,7 @@ async function disconnectDatabase() {
 }
 
 const fakeId = (id) => {
-  return mongoose.Types.ObjectId(id);
+  return mongoose.Types.ObjectId(id || 24601);
 };
 
 module.exports = {

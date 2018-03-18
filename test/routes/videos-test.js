@@ -55,7 +55,7 @@ describe('Server path: /videos/:id', () => {
     });
 
     it('returns a 404 status for nonexistent videos', async () => {
-      const videoId = fakeId(24601);
+      const videoId = fakeId();
 
       const response = await request(app).get(`/videos/${videoId}`);
 
@@ -63,7 +63,7 @@ describe('Server path: /videos/:id', () => {
     });
 
     it('renders reasonable error page when video is missing', async () => {
-      const videoId = fakeId(24601);
+      const videoId = fakeId();
 
       const response = await request(app).get(`/videos/${videoId}`);
 
@@ -71,7 +71,7 @@ describe('Server path: /videos/:id', () => {
     });
 
     it('includes link to add page when video is missing', async () => {
-      const videoId = fakeId(24601);
+      const videoId = fakeId();
 
       const response = await request(app).get(`/videos/${videoId}`);
 

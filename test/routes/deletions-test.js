@@ -32,7 +32,7 @@ describe('Server path: /videos/:id/deletions', () => {
     });
 
     it('fails to delete a nonexistent video', async () => {
-      const videoId = fakeId(24601);
+      const videoId = fakeId();
 
       const response = await request(app).
             post(`/videos/${videoId}/deletions`).
@@ -44,7 +44,7 @@ describe('Server path: /videos/:id/deletions', () => {
     });
 
     it('renders reasonable error page for nonexistent video', async () => {
-      const videoId = fakeId(24601);
+      const videoId = fakeId();
 
       const response = await request(app).
             post(`/videos/${videoId}/deletions`).
