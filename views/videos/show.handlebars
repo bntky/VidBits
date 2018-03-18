@@ -12,5 +12,10 @@
     </div>
 
     <a id="edit" href="/videos/{{video._id}}/edit">Edit</a>
+    <form action="/videos/{{video._id}}/deletions" method="post">
+      <button id="delete" type="submit">
+        <p>Delete</p>
+      </button>
+    </form>
   </div>
 </div>
