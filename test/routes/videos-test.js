@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseAttributeFromHTML, parseTextFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase, fakeId} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, fakeId, generateNewVideo} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -16,16 +16,12 @@ describe('Server path: /', () => {
     
   describe('GET', () => {
     it('renders a video with a title and description', async () => {
-      const title = 'Yet Another Train';
-      const description =
-            'Watch as another train thrills you by driving down a train track';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = await Video.create({title, description, url});
+      const video = await Video.create(generateNewVideo());
       
       const response = await request(app).get('/').redirects();
 
-      assert.include(response.text, title);
-      assert.include(response.text, description);
+      assert.include(response.text, video.title);
+      assert.include(response.text, video.description);
     });
   });
 });
@@ -36,11 +32,7 @@ describe('Server path: /videos/:id', () => {
 
   describe('GET', () => {
     it('renders video by ID', async () => {
-      const title = 'Yet Another Train';
-      const description =
-            'Watch as another train thrills you by driving down a train track';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = await Video.create({title, description, url});
+      const video = await Video.create(generateNewVideo());
 
       const response = await request(app).get(`/videos/${video._id}`);
       const expectedTitle = parseTextFromHTML(response.text, '.video-title');
@@ -49,9 +41,9 @@ describe('Server path: /videos/:id', () => {
       const expectedUrl = parseAttributeFromHTML(
         response.text, '.video-player', 'src');
 
-      assert.include(expectedTitle, title);
-      assert.include(expectedDescription, description);
-      assert.equal(expectedUrl, url);
+      assert.include(expectedTitle, video.title);
+      assert.include(expectedDescription, video.description);
+      assert.equal(expectedUrl, video.url);
     });
 
     it('returns a 404 status for nonexistent videos', async () => {
@@ -87,25 +79,17 @@ describe('Server path: /videos/:id/edit', () => {
 
   describe('GET', () => {
     it('renders a form to edit the video', async () => {
-      const title = 'Yet Another Train';
-      const description =
-            'Watch as another train thrills you by driving down a train track';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = await Video.create({title, description, url});
+      const video = await Video.create(generateNewVideo());
       
       const response = await request(app).
             get(`/videos/${video._id}/edit`).
             redirects();
 
-      assert.include(response.text, title);
+      assert.include(response.text, video.title);
     });
 
     it('posts the edited video to /updates', async () => {
-      const title = 'Yet Another Train';
-      const description =
-            'Watch as another train thrills you by driving down a train track';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = await Video.create({title, description, url});
+      const video = await Video.create(generateNewVideo());
       
       const response = await request(app).
             get(`/videos/${video._id}/edit`).

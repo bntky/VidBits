@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseTextFromHTML, parseAttributeFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, generateNewVideo} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -16,16 +16,13 @@ describe('Server path: /videos/:id/updates', () => {
     
   describe('POST', () => {
     it('updates an existing video', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
       const newTitle = 'A newer than new train video';
       const updatedVideo = {
         title: newTitle,
-        description: description,
-        url: url
+        description: video.description,
+        url: video.url
       };
 
       const response = await request(app).
@@ -39,16 +36,13 @@ describe('Server path: /videos/:id/updates', () => {
     });
 
     it('returns a 302 status after updating a video', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
       const newTitle = 'A newer than new train video';
       const updatedVideo = {
         title: newTitle,
-        description: description,
-        url: url
+        description: video.description,
+        url: video.url
       };
 
       const response = await request(app).
@@ -60,15 +54,12 @@ describe('Server path: /videos/:id/updates', () => {
     });
 
     it('invalid updates to a video will not change the database', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
       const replaceVideo = {
         title: undefined,
-        description: description,
-        url: url
+        description: video.description,
+        url: video.url
       };
 
       const response = await request(app).
@@ -77,19 +68,16 @@ describe('Server path: /videos/:id/updates', () => {
             send(replaceVideo);
       const updatedVideo = await Video.findById(video._id);
 
-      assert.strictEqual(updatedVideo.title, title);
+      assert.strictEqual(updatedVideo.title, video.title);
     });
 
     it('invalid updates to a video will not change the database', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
       const replaceVideo = {
-        title: title,
+        title: video.title,
         description: undefined,
-        url: url
+        url: video.url
       };
 
       const response = await request(app).
@@ -101,14 +89,11 @@ describe('Server path: /videos/:id/updates', () => {
     });
 
     it('invalid updates to a video will render the edit form', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
       const replaceVideo = {
-        title: title,
-        description: description,
+        title: video.title,
+        description: video.description,
         url: undefined
       };
 
@@ -118,7 +103,8 @@ describe('Server path: /videos/:id/updates', () => {
             send(replaceVideo);
 
       assert.equal(
-        parseAttributeFromHTML(response.text, '#url-input', 'value'), url);
+        parseAttributeFromHTML(response.text, '#url-input', 'value'),
+        video.url);
     });
   });
 });

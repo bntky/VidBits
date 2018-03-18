@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseTextFromHTML, parseAttributeFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, generateNewVideo} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -16,11 +16,7 @@ describe('Server path: /videos', () => {
     
   describe('POST', () => {
     it('returns 201 when posting video', async () => {
-      const video = {
-        title: 'This needs a title',
-        description: 'Oooo Cool train!  Lets look at the train now...!',
-        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
-      };
+      const video = generateNewVideo();
 
       const response = await request(app).
             post('/videos').
@@ -32,11 +28,7 @@ describe('Server path: /videos', () => {
     });
 
     it('creates a new video and adds it to the database', async () => {
-      const video = {
-        title: 'A new train video',
-        description: 'Oooo Cool train!  Lets look at the train now...!',
-        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
-      };
+      const video = generateNewVideo();
 
       const response = await request(app).
             post('/videos').
@@ -48,10 +40,7 @@ describe('Server path: /videos', () => {
     });
 
     it('saves a Video document', async () => {
-      const title = 'A new train video';
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {title, description, url};
+      const video = generateNewVideo();
 
       const response = await request(app).
             post('/videos').
@@ -63,9 +52,7 @@ describe('Server path: /videos', () => {
     });
 
     it('no video added to database when title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -75,15 +62,13 @@ describe('Server path: /videos', () => {
 
       const expectedTitle = parseAttributeFromHTML(
         response.text, '#title-input', 'value');
-      
+
       assert.isNull(createdVideo);
       assert.equal(expectedTitle, '');
     });
 
     it('responds with 400 if the title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -96,9 +81,7 @@ describe('Server path: /videos', () => {
     });
 
     it('renders the create video form when title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -112,9 +95,7 @@ describe('Server path: /videos', () => {
     });
 
     it('renders a validation error message when title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -127,9 +108,7 @@ describe('Server path: /videos', () => {
     });
 
     it('renders the description value when title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -139,15 +118,11 @@ describe('Server path: /videos', () => {
       const expectedDescription = parseTextFromHTML(
         response.text, '#description-input');
       
-      assert.include(expectedDescription, description);
+      assert.include(expectedDescription, video.description);
     });
 
     it('redirects new video to /vidoes/:id', async () => {
-      const video = {
-        title: 'A new train video',
-        description: 'Oooo Cool train!  Lets look at the train now...!',
-        url: 'https://www.youtube.com/watch?v=3EGOwfWok5s'
-      };
+      const video = generateNewVideo();
 
       const response = await request(app).
             post('/videos').
@@ -160,9 +135,7 @@ describe('Server path: /videos', () => {
     });
 
     it('renders URL value when title is missing', async () => {
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {description, url};
+      const video = generateNewVideo({title: null});
 
       const response = await request(app).
             post('/videos').
@@ -172,13 +145,11 @@ describe('Server path: /videos', () => {
       const expectedUrl = parseAttributeFromHTML(
         response.text, '#url-input', 'value');
       
-      assert.include(expectedUrl, url);
+      assert.include(expectedUrl, video.url);
     });
 
     it('renders a validation message when URL is missing', async () => {
-      const title = 'A new train video';
-      const description = 'Oooo Cool train!  Lets look at the train now...!';
-      const video = {title, description};
+      const video = generateNewVideo({url: null});
 
       const response = await request(app).
             post('/videos').
@@ -191,9 +162,7 @@ describe('Server path: /videos', () => {
     });
 
     it('renders the title when description is missing', async () => {
-      const title = 'A new train video';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {title, url};
+      const video = generateNewVideo({description: null});
 
       const response = await request(app).
             post('/videos').
@@ -203,13 +172,11 @@ describe('Server path: /videos', () => {
       const expectedTitle = parseAttributeFromHTML(
         response.text, '#title-input', 'value');
 
-      assert.include(expectedTitle, title);
+      assert.include(expectedTitle, video.title);
     });
 
     it('renders a validation message when description is missing', async () => {
-      const title = 'A new train video';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = {title, url};
+      const video = generateNewVideo({description: null});
 
       const response = await request(app).
             post('/videos').
@@ -217,7 +184,7 @@ describe('Server path: /videos', () => {
             send(video);
 
       const expectedError = parseTextFromHTML(response.text, 'span');
-      
+
       assert.include(expectedError, 'description is required');
     });
   });

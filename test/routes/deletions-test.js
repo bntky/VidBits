@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseTextFromHTML, parseAttributeFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase, fakeId} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, fakeId, generateNewVideo} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -16,10 +16,7 @@ describe('Server path: /videos/:id/deletions', () => {
     
   describe('POST', () => {
     it('removes a record', async () => {
-      const title = 'A new train video';
-      const description= 'Oooo Cool train!  Lets look at the train now...!';
-      const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      const video = new Video({title, description, url});
+      const video = new Video(generateNewVideo());
       await video.save();
 
       const response = await request(app).
