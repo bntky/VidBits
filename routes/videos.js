@@ -18,7 +18,7 @@ router.get('/videos/create.html', async (req, res, next) => {
 router.get('/videos/:id', async (req, res, next) => {
   const video = await Video.findById(req.params.id);
   if ( video == null ) {
-    res.status(404).send('missing');
+    res.status(404).render('videos/not-found');
   } else {
     res.status(201).render('videos/show', {video});
   }

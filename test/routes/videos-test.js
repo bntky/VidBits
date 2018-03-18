@@ -61,6 +61,14 @@ describe('Server path: /videos/:id', () => {
 
       assert.equal(response.status, 404);
     });
+
+    it('renders reasonable error page when video is missing', async () => {
+      const videoId = fakeId(24601);
+
+      const response = await request(app).get(`/videos/${videoId}`);
+
+      assert.include(parseTextFromHTML(response.text, 'h1'), 'Video not found');
+    });
   });
 });
 
