@@ -42,5 +42,16 @@ describe('Server path: /videos/:id/deletions', () => {
       assert.equal(response.status, 404);
       assert.include(response.text, 'Video not found');
     });
+
+    it('renders reasonable error page for nonexistent video', async () => {
+      const videoId = fakeId(24601);
+
+      const response = await request(app).
+            post(`/videos/${videoId}/deletions`).
+            type('form').
+            send({});
+
+      assert.include(parseTextFromHTML(response.text, 'h1'), 'Video not found');
+    });
   });
 });

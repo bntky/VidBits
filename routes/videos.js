@@ -67,7 +67,7 @@ router.post('/videos/:id/deletions', async (req, res, next) => {
   const video = await Video.findById(req.params.id);
 
   if (video == null) {
-    res.status(404).send('Video not found');
+    res.status(404).render('videos/not-found');
   } else {
     await video.remove();
     res.redirect('/');
