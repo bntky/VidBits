@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseTextFromHTML, parseAttributeFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, fakeId} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -29,6 +29,18 @@ describe('Server path: /videos/:id/deletions', () => {
       const allVideos = await Video.find({});
 
       assert.equal(allVideos.length, 0);
+    });
+
+    it('fails to delete a nonexistent video', async () => {
+      const videoId = fakeId(24601);
+
+      const response = await request(app).
+            post(`/videos/${videoId}/deletions`).
+            type('form').
+            send({});
+
+      assert.equal(response.status, 404);
+      assert.include(response.text, 'Video not found');
     });
   });
 });
