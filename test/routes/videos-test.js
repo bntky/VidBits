@@ -4,7 +4,7 @@ const {jsdom} = require('jsdom');
 
 const {parseAttributeFromHTML, parseTextFromHTML} = require('../test-utils');
 
-const {connectDatabase, disconnectDatabase} = require('../database-utilities'); 
+const {connectDatabase, disconnectDatabase, fakeId} = require('../database-utilities'); 
 
 const Video = require('../../models/video');
 
@@ -52,6 +52,14 @@ describe('Server path: /videos/:id', () => {
       assert.include(expectedTitle, title);
       assert.include(expectedDescription, description);
       assert.equal(expectedUrl, url);
+    });
+
+    it('returns a 404 status for nonexistent videos', async () => {
+      const videoId = fakeId(24601);
+
+      const response = await request(app).get(`/videos/${videoId}`);
+
+      assert.equal(response.status, 404);
     });
   });
 });
