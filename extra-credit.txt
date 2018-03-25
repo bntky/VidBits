@@ -1,0 +1,19 @@
+Nice Job! you created a full-stack web application that allows a user
+to create, retrieve, update, and delete records from a database.
+
+You developed this web application using the red, green, refactor
+cycle to ensure that your application works as expected. We encourage
+you to continue working on this application using your outside-in TDD
+skills. Although some of the following extension activities may seem
+challenging, start in the red, and slowly build your desired
+functionality.
+
+- Add a notion of anonymous comments to the application.
+- Create different roles for the different users of the web page. You
+  probably only want administrators to be able to create, update, and
+  delete records.
+- Make it so you can post videos or gifs to the application.
+
+Good luck as you continue your TDD journey. Remember, you don’t have
+to solve the entire implementation problem right away. Start by
+writing a test at the feature level, then work your way down.
