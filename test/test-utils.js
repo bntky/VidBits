@@ -32,7 +32,26 @@ const parseTextFromHTML = (htmlAsString, selector) => {
   }
 };
 
+const generateRandomUrl = (domain) => {
+  return `http://${domain}/${Math.random()}`;
+};
+
+const addNewVideo = (options = {}) => {
+  const title = options.title || 'A Train Video';
+  const description = options.description || 'Train drives down train tracks. Honks horn.';
+  const url = options.url || generateRandomUrl('www.youtube.com');
+  browser.url('/videos/create');
+  browser.setValue('#title-input', title);
+  browser.setValue('#description-input', description);
+  browser.setValue('#url-input', url);
+  browser.click('#submit-button');
+  browser.url('/');
+  return {title, description, url};
+};
+
 module.exports = {
   parseAttributeFromHTML,
-  parseTextFromHTML
+  parseTextFromHTML,
+  generateRandomUrl,
+  addNewVideo
 }

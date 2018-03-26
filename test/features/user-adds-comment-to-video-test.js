@@ -1,27 +1,11 @@
 const {assert} = require('chai');
 
-require('../test-utils');
-
-const generateRandomUrl = (domain) => {
-  return `http://${domain}/${Math.random()}`;
-};
-
-const addNewVideo = (title, description, url) => {
-  browser.url('/videos/create');
-  browser.setValue('#title-input', title);
-  browser.setValue('#description-input', description);
-  browser.setValue('#url-input', url);
-  browser.click('#submit-button');
-  browser.url('/');
-};
+const {addNewVideo} = require('../test-utils');
 
 describe('User comments', () => {
   describe('on an existing video', () => {
     it('starts blank', () => {
-      const title = 'A Train vidoe';
-      const description = 'Train drives down train tracks.  Honks horn.';
-      const url = generateRandomUrl('www.youtube.com');
-      addNewVideo(title, description, url);
+      const {title, description, url} = addNewVideo();
       browser.click('.show-video');
 
       assert.equal(browser.getText('#comments-container'), '');
@@ -30,10 +14,8 @@ describe('User comments', () => {
 
   describe('posted to an exiting video', () => {
     it('POST to the /videos/:id/comments URL', () => {
-      const title = 'A Train vidoe';
-      const description = 'Train drives down train tracks.  Honks horn.';
-      const url = generateRandomUrl('www.youtube.com');
-      addNewVideo(title, description, url);
+      const {title, description, url} = addNewVideo();
+
       browser.click('.show-video');
 
       assert.match(browser.getAttribute('.comment-form', 'action'),
@@ -41,11 +23,9 @@ describe('User comments', () => {
     });
 
     it('appear on the video show page', () => {
-      const title = 'A Train vidoe';
-      const description = 'Train drives down train tracks.  Honks horn.';
-      const url = generateRandomUrl('www.youtube.com');
+      const {title, description, url} = addNewVideo();
       const comment = 'First post!';
-      addNewVideo(title, description, url);
+
       browser.click('.show-video');
       browser.setValue('#comment-input', comment);
       browser.click('#submit-comment');
