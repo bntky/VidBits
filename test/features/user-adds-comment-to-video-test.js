@@ -39,5 +39,18 @@ describe('User comments', () => {
       assert.match(browser.getAttribute('.comment-form', 'action'),
                    /\/videos\/[a-f0-9]+\/comments/);
     });
+
+    it('appear on the video show page', () => {
+      const title = 'A Train vidoe';
+      const description = 'Train drives down train tracks.  Honks horn.';
+      const url = generateRandomUrl('www.youtube.com');
+      const comment = 'First post!';
+      addNewVideo(title, description, url);
+      browser.click('.show-video');
+      browser.setValue('#comment-input', comment);
+      browser.click('#submit-comment');
+
+      assert.include(browser.getText('#comments-container'), comment);
+    });
   });
 });
