@@ -12,7 +12,7 @@ router.get('/videos', async (req, res, next) => {
 });
 
 router.get('/videos/create.html', async (req, res, next) => {
-  res.status(200).render('create');
+  res.status(200).render('videos/create');
 });
 
 router.get('/videos/:id', async (req, res, next) => {
@@ -35,7 +35,7 @@ router.post('/videos', async (req, res, next) => {
   video.validateSync();
   
   if( video.errors ) {
-    res.status(400).render('create', {video});
+    res.status(400).render('videos/create', {video});
   } else {
     await video.save();
     res.redirect(`/videos/${video._id}`);
