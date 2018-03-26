@@ -35,15 +35,15 @@ describe('Server path: /videos/:id', () => {
       const video = await Video.create(generateNewVideo());
 
       const response = await request(app).get(`/videos/${video._id}`);
-      const expectedTitle = parseTextFromHTML(response.text, '.video-title');
-      const expectedDescription = parseTextFromHTML(
+      const title = parseTextFromHTML(response.text, '.video-title');
+      const description = parseTextFromHTML(
         response.text, '.video-description');
-      const expectedUrl = parseAttributeFromHTML(
+      const url = parseAttributeFromHTML(
         response.text, '.video-player', 'src');
 
-      assert.include(expectedTitle, video.title);
-      assert.include(expectedDescription, video.description);
-      assert.equal(expectedUrl, video.url);
+      assert.include(title, video.title);
+      assert.include(description, video.description);
+      assert.equal(url, video.url);
     });
 
     it('returns a 404 status for nonexistent videos', async () => {

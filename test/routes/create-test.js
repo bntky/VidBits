@@ -60,11 +60,11 @@ describe('Server path: /videos', () => {
             send(video);
       const createdVideo = await Video.findOne({});
 
-      const expectedTitle = parseAttributeFromHTML(
+      const title = parseAttributeFromHTML(
         response.text, '#title-input', 'value');
 
       assert.isNull(createdVideo);
-      assert.equal(expectedTitle, '');
+      assert.equal(title, '');
     });
 
     it('responds with 400 if the title is missing', async () => {
@@ -75,9 +75,7 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedStatus = response.status;
-      
-      assert.equal(expectedStatus, 400);
+      assert.equal(response.status, 400);
     });
 
     it('renders the create video form when title is missing', async () => {
@@ -88,10 +86,10 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedFormAction = parseAttributeFromHTML(
+      const formAction = parseAttributeFromHTML(
         response.text, 'form', 'action');
       
-      assert.equal(expectedFormAction, '/videos');
+      assert.equal(formAction, '/videos');
     });
 
     it('renders a validation error message when title is missing', async () => {
@@ -102,9 +100,9 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedError = parseTextFromHTML(response.text, 'span');
+      const resultError = parseTextFromHTML(response.text, 'span');
       
-      assert.include(expectedError, 'title is required');
+      assert.include(resultError, 'title is required');
     });
 
     it('renders the description value when title is missing', async () => {
@@ -115,10 +113,10 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedDescription = parseTextFromHTML(
+      const description = parseTextFromHTML(
         response.text, '#description-input');
       
-      assert.include(expectedDescription, video.description);
+      assert.include(description, video.description);
     });
 
     it('redirects new video to /vidoes/:id', async () => {
@@ -142,10 +140,10 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedUrl = parseAttributeFromHTML(
+      const url = parseAttributeFromHTML(
         response.text, '#url-input', 'value');
       
-      assert.include(expectedUrl, video.url);
+      assert.include(url, video.url);
     });
 
     it('renders a validation message when URL is missing', async () => {
@@ -156,9 +154,9 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedError = parseTextFromHTML(response.text, 'span');
+      const resultError = parseTextFromHTML(response.text, 'span');
       
-      assert.include(expectedError, 'a URL is required');
+      assert.include(resultError, 'a URL is required');
     });
 
     it('renders the title when description is missing', async () => {
@@ -169,10 +167,10 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedTitle = parseAttributeFromHTML(
+      const title = parseAttributeFromHTML(
         response.text, '#title-input', 'value');
 
-      assert.include(expectedTitle, video.title);
+      assert.include(title, video.title);
     });
 
     it('renders a validation message when description is missing', async () => {
@@ -183,9 +181,9 @@ describe('Server path: /videos', () => {
             type('form').
             send(video);
 
-      const expectedError = parseTextFromHTML(response.text, 'span');
+      const resultError = parseTextFromHTML(response.text, 'span');
 
-      assert.include(expectedError, 'description is required');
+      assert.include(resultError, 'description is required');
     });
   });
 });
