@@ -74,4 +74,8 @@ router.post('/videos/:id/deletions', async (req, res, next) => {
   }
 });
 
+router.post('/videos/:id/comments', async (req, res, next) => {
+  res.redirect(`/videos/${req.params.id}`);
+});
+
 module.exports = router;
