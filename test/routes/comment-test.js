@@ -28,5 +28,19 @@ describe('Server path: /videos/:id/comments', () => {
       assert.equal(response.status, 302);
       assert.equal(response.headers.location, `/videos/${video._id}`);
     });
+
+    it('adds new comment to existing video in database', async () => {
+      const video = new Video(generateNewVideo());
+      await video.save();
+      const comment = 'First post!';
+
+      const response = await request(app).
+            post(`/videos/${video._id}/comments`).
+            type('form').
+            send({comment});
+      const createdVideo = await Video.findOne({});
+
+      assert.include(createdVideo.comments, comment);
+    });
   });
 });
