@@ -64,4 +64,14 @@ describe('Model: Video', () => {
       assert.equal(video.errors.url.message, 'a URL is required');
     });
   });
+
+  describe('comments field', () => {
+    it('is an array', async () => {
+      const comments = [];
+
+      const video = new Video({comments});
+
+      assert.isArray(video.comments);
+    });
+  });
 });
