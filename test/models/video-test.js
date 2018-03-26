@@ -73,5 +73,13 @@ describe('Model: Video', () => {
 
       assert.isArray(video.comments);
     });
+
+    it('array only includes strings', () => {
+      const comments = [24601];
+
+      const video = new Video({comments});
+
+      assert.strictEqual(video.comments[0], comments[0].toString());
+    });
   });
 });
