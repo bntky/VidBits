@@ -9,7 +9,7 @@ describe('User deleting a video', () => {
       const description = "A long description of some interesting train video";
       const url = 'https://www.youtube.com/embed/Yn5Ie1FSDqk';
 
-      browser.url('/videos/create.html');
+      browser.url('/videos/create');
       browser.setValue('#title-input', title);
       browser.setValue('#description-input', description);
       browser.setValue('#url-input', url);

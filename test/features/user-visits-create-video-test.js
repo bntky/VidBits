@@ -5,7 +5,7 @@ require('../test-utils');
 describe('User visits create video page', () => {
   describe('posts a new item', () => {
     it('to the /videos URL', () => {
-      browser.url('/videos/create.html');
+      browser.url('/videos/create');
 
       assert.include(browser.getAttribute('.input-form', 'action'), '/videos');
     });
@@ -13,7 +13,7 @@ describe('User visits create video page', () => {
       const title = "My first title";
       const description = "A long description of some interesting train video";
       const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
-      browser.url('/videos/create.html');
+      browser.url('/videos/create');
 
       browser.setValue('#title-input', title);
       browser.setValue('#description-input', description);

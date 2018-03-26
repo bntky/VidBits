@@ -7,7 +7,7 @@ const generateRandomUrl = (domain) => {
 };
 
 const addNewVideo = (title, description, url) => {
-  browser.url('/videos/create.html');
+  browser.url('/videos/create');
   browser.setValue('#title-input', title);
   browser.setValue('#description-input', description);
   browser.setValue('#url-input', url);
@@ -26,7 +26,7 @@ describe('User visits root', () => {
     it('to videos/create', () => {
       browser.url('/');
 
-      browser.click('a[href="videos/create.html"]');
+      browser.click('a[href="videos/create"]');
 
       assert.include(browser.getText('body'), 'Save a video');
     });

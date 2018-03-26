@@ -10,7 +10,7 @@ describe('User updating a video', () => {
       const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
       const newTitle = 'Change the title to something else';
 
-      browser.url('/videos/create.html');
+      browser.url('/videos/create');
       browser.setValue('#title-input', title);
       browser.setValue('#description-input', description);
       browser.setValue('#url-input', url);
@@ -28,7 +28,7 @@ describe('User updating a video', () => {
       const url = 'https://www.youtube.com/watch?v=3EGOwfWok5s';
       const newTitle = 'Change the title to something else';
 
-      browser.url('/videos/create.html');
+      browser.url('/videos/create');
       browser.setValue('#title-input', title);
       browser.setValue('#description-input', description);
       browser.setValue('#url-input', url);

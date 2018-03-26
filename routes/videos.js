@@ -11,7 +11,7 @@ router.get('/videos', async (req, res, next) => {
   res.render('videos/index', {videos});
 });
 
-router.get('/videos/create.html', async (req, res, next) => {
+router.get('/videos/create', async (req, res, next) => {
   res.status(200).render('videos/create');
 });
 

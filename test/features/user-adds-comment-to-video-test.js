@@ -7,7 +7,7 @@ const generateRandomUrl = (domain) => {
 };
 
 const addNewVideo = (title, description, url) => {
-  browser.url('/videos/create.html');
+  browser.url('/videos/create');
   browser.setValue('#title-input', title);
   browser.setValue('#description-input', description);
   browser.setValue('#url-input', url);
