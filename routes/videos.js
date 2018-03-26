@@ -77,8 +77,11 @@ router.post('/videos/:id/deletions', async (req, res, next) => {
 router.post('/videos/:id/comments', async (req, res, next) => {
   const {comment} = req.body;
   let video = await Video.findById(req.params.id);
-  video.comments.push(comment);
-  await video.save();
+
+  if( comment !== '') {
+    video.comments.push(comment);
+    await video.save();
+  }
   
   res.redirect(`/videos/${req.params.id}`);
 });

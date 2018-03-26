@@ -42,5 +42,19 @@ describe('Server path: /videos/:id/comments', () => {
 
       assert.include(createdVideo.comments, comment);
     });
+
+    it('does not add blank comment to database', async () => {
+      const video = new Video(generateNewVideo());
+      await video.save();
+      const comment = '';
+
+      const response = await request(app).
+            post(`/videos/${video._id}/comments`).
+            type('form').
+            send({comment});
+      const createdVideo = await Video.findOne({});
+
+      assert.equal(createdVideo.comments.length, 0);
+    });
   });
 });
