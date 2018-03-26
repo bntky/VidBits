@@ -70,6 +70,21 @@ describe('Server path: /videos/:id', () => {
       assert.include(
         parseTextFromHTML(response.text, '.add-video-button'), 'Add');
     });
+
+    it('renders a comment posted to an existing video', async () => {
+      const video = new Video(generateNewVideo());
+      await video.save();
+      const comment = 'First post!';
+
+      const response = await request(app).
+            post(`/videos/${video._id}/comments`).
+            type('form').
+            send({comment}).
+            redirects();
+      const result = parseTextFromHTML(response.text, '.comments-container');
+
+      assert.include(result, comment);
+    });
   });
 });
 

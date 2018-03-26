@@ -18,6 +18,11 @@
       </button>
     </form>
     <div class="comments-container" id="comments-container">
+      {{#each video.comments as |comment|}}
+      <div class="comment-container">
+        {{comment}}
+      </div>
+      {{/each}}    
     </div>
     <form class="comment-form" action="/videos/{{video._id}}/comments" method="post">
       <label class="form-label" for="comment">Comment</label>
