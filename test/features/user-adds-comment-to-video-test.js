@@ -27,4 +27,17 @@ describe('User comments', () => {
       assert.equal(browser.getText('#comments-container'), '');
     });
   });
+
+  describe('posted to an exiting video', () => {
+    it('POST to the /videos/:id/comments URL', () => {
+      const title = 'A Train vidoe';
+      const description = 'Train drives down train tracks.  Honks horn.';
+      const url = generateRandomUrl('www.youtube.com');
+      addNewVideo(title, description, url);
+      browser.click('.show-video');
+
+      assert.match(browser.getAttribute('.comment-form', 'action'),
+                   /\/videos\/[a-f0-9]+\/comments/);
+    });
+  });
 });
