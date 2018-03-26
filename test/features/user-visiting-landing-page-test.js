@@ -30,7 +30,7 @@ describe('User visits root', () => {
 
   describe('with an existing video', () => {
     it('can navigate to a video', () => {
-      const {title, description, url} = addNewVideo();
+      const {title} = addNewVideo();
       
       assert.equal(browser.getText('.show-video'), title);
     });

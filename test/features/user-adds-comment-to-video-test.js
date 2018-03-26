@@ -5,7 +5,7 @@ const {addNewVideo} = require('../test-utils');
 describe('User comments', () => {
   describe('on an existing video', () => {
     it('starts blank', () => {
-      const {title, description, url} = addNewVideo();
+      addNewVideo();
       browser.click('.show-video');
 
       assert.equal(browser.getText('#comments-container'), '');
@@ -14,7 +14,7 @@ describe('User comments', () => {
 
   describe('posted to an exiting video', () => {
     it('POST to the /videos/:id/comments URL', () => {
-      const {title, description, url} = addNewVideo();
+      addNewVideo();
 
       browser.click('.show-video');
 
@@ -23,9 +23,9 @@ describe('User comments', () => {
     });
 
     it('appear on the video show page', () => {
-      const {title, description, url} = addNewVideo();
       const comment = 'First post!';
 
+      addNewVideo();
       browser.click('.show-video');
       browser.setValue('#comment-input', comment);
       browser.click('#submit-comment');

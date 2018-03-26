@@ -45,7 +45,11 @@ const addNewVideo = (options = {}) => {
   browser.setValue('#description-input', description);
   browser.setValue('#url-input', url);
   browser.click('#submit-button');
-  browser.url('/');
+  if( options.page === undefined ) {
+    browser.url('/');
+  } else if( options.page !== null ) {
+    browswer.url(options.page);
+  }
   return {title, description, url};
 };
 
